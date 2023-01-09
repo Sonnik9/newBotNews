@@ -29,7 +29,6 @@ chat_id = '-1001579866760'
 session = HTMLSession()
 
 def newsCapturer(): 
-        # print('hellooo')
         global flag           
         try:
             r = session.get('https://www.pravda.com.ua/rus/news/', headers=HEADERS)
@@ -58,7 +57,6 @@ def newsCapturer():
                     hrefsControler(a_new_link)
                 else:
                     print('retry')
-                    flag = False
                     time.sleep(random.randrange(119,141))
                     newsCapturer()                     
             else:
@@ -250,7 +248,7 @@ def ePravdaCom(a_new_link):
         
 def integrationCom(a_new_link):
     global result
-    global mes
+    global mes    
     result = []
     mes = ''
     counter = 0
@@ -370,11 +368,11 @@ def lifePravdaCom(a_new_link):
 bot = telebot.TeleBot(API_KEY)
 @bot.message_handler(commands=['start']) 
 
-def start(message):    
-    while(True):
-        global result
-        global mes 
-        global flag     
+def start(message):
+    global result
+    global mes 
+    global flag      
+    while(True):   
         time.sleep(2)        
         print(str('test' + result[0]['header'] + 'hhbhbhbh'))
         print(flag)
@@ -392,15 +390,19 @@ def start(message):
                 try:
                 #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
                    bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
+                   flag = False
+                   print('success2')
                 except:
                     print('sec connection error') 
                     time.sleep(20)  
                     try:
                 #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
                         bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
+                        flag = False
+                        print('success3')
                     except:
                         print('third connection error')                  
-            flag = False
+            
         print('away')        
         time.sleep(random.randrange(119,141))
         newsCapturer()
