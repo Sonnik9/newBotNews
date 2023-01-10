@@ -29,7 +29,8 @@ chat_id = '-1001579866760'
 session = HTMLSession()
 
 def newsCapturer(): 
-        global flag           
+        global flag
+        global middleNight           
         try:
             r = session.get('https://www.pravda.com.ua/rus/news/', headers=HEADERS)
             soup = BeautifulSoup(r.text, 'lxml')
@@ -44,9 +45,10 @@ def newsCapturer():
             if datetime.datetime.now().strftime("%H") == "00" and middleNight == 1:                                
                 timeSetBank.clear()
                 timeSize.clear()
-                middleNight == 0
+                middleNight = 0
             if datetime.datetime.now().strftime("%H") == "23":
-                middleNight == 1      
+                print(len(timeSetBank))
+                middleNight = 1      
             
             if len(timeSize) != 0:                
                 timeSetBank.add(timeBlock.get_text())
@@ -409,7 +411,7 @@ def start(message):
 
 def main(): 
     newsCapturer()   
-    bot.polling() 
+    bot.infinity_polling() 
         
 if __name__ == "__main__":
     main()  
