@@ -43,11 +43,11 @@ def newsCapturer():
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
             print(datetime.datetime.now().strftime("%H"))              
             
-            if datetime.datetime.now().strftime("%H") == "00" and middleNight == 1:                                
+            if datetime.datetime.now().strftime("%H") == "22" and middleNight == 1:                                
                 timeSetBank.clear()
                 timeSize.clear()
                 middleNight = 0
-            if datetime.datetime.now().strftime("%H") == "23":
+            if datetime.datetime.now().strftime("%H") == "21":
                 print(len(timeSetBank))
                 middleNight = 1      
             
