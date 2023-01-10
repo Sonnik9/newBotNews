@@ -40,7 +40,8 @@ def newsCapturer():
                 match = re.search(r'https://', aBlock)
                 a_new_link = match.string       
             except: 
-                a_new_link = f"https://www.pravda.com.ua{aBlock}"              
+                a_new_link = f"https://www.pravda.com.ua{aBlock}"
+            print(datetime.datetime.now().strftime("%H"))              
             
             if datetime.datetime.now().strftime("%H") == "00" and middleNight == 1:                                
                 timeSetBank.clear()
