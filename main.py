@@ -54,7 +54,7 @@ def newsCapturer():
             if timeBlock..get_text().strip().split(':')[0] == "00" and middleNight == 1:                                
                 timeSetBank.clear()
                 timeSize.clear()
-                middleNight = 0
+                middleNight = 0 
             if timeBlock..get_text().strip().split(':')[0] == "23":
                 print('true time')
                 print(len(timeSetBank))
