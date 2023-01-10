@@ -41,6 +41,7 @@ def newsCapturer():
                 a_new_link = match.string       
             except: 
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
+            print(timeBlock.split(':')[0])
             print(datetime.datetime.now().strftime("%H"))              
             
             if datetime.datetime.now().strftime("%H") == "22" and middleNight == 1:                                
@@ -50,6 +51,14 @@ def newsCapturer():
             if datetime.datetime.now().strftime("%H") == "21":
                 print(len(timeSetBank))
                 middleNight = 1      
+            if timeBlock.split(':')[0] == "00" and middleNight == 1:                                
+                timeSetBank.clear()
+                timeSize.clear()
+                middleNight = 0
+            if timeBlock.split(':')[0] == "23":
+                print('true time')
+                print(len(timeSetBank))
+                middleNight = 1                      
             
             if len(timeSize) != 0:                
                 timeSetBank.add(timeBlock.get_text())
