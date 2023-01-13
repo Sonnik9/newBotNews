@@ -192,7 +192,8 @@ def pravdaCom(a_new_link):
             if counter == 7:
                 counter = 0
                 break
-            time.sleep(2)
+                
+            time.sleep(random.randrange(2, 8))
             continue
         
 def ePravdaCom(a_new_link):
@@ -255,7 +256,7 @@ def ePravdaCom(a_new_link):
             if counter == 7:
                 counter = 0
                 break
-            time.sleep(2)
+            time.sleep(random.randrange(2, 8))
             continue
         
 def integrationCom(a_new_link):
@@ -312,7 +313,7 @@ def integrationCom(a_new_link):
             if counter == 7:
                 counter = 0
                 break
-            time.sleep(2)
+            time.sleep(random.randrange(2, 8))
             continue
 def lifePravdaCom(a_new_link):
     global result
@@ -374,7 +375,7 @@ def lifePravdaCom(a_new_link):
             if counter == 7:
                 counter = 0
                 break
-            time.sleep(2)
+            time.sleep(random.randrange(2, 8))
             continue
 
 bot = telebot.TeleBot(API_KEY)
@@ -385,8 +386,12 @@ def start(message):
     global mes 
     global flag      
     while(True):   
-        time.sleep(2)        
-        print(str('test' + result[0]['header'] + 'hhbhbhbh'))
+        time.sleep(2)
+        try:        
+           print(str('test' + result[0]['header'] + 'hhbhbhbh'))
+        except:
+           print('empty result')
+           newsCapturer()
         print(flag)
         print('first away')              
         if flag == True:           
