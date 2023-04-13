@@ -197,7 +197,7 @@ def pravdaCom(a_new_link, headers):
     while(True): 
         try:  
             r = session.get(f'{a_new_link}', headers=headers)
-            print(r.status_code)
+            # print(r.status_code)
             # r = session.get(f'https://www.pravda.com.ua/rus/news/2022/12/30/7383053/', headers=HEADERS)    
             soup = BeautifulSoup(r.text, 'lxml')
             # print(r.text)
@@ -242,7 +242,7 @@ def pravdaCom(a_new_link, headers):
             })    
             mes = result[0]['dataInfo'] + '\n' + result[0]['img'] + '\n' + result[0]['text'] + '\n' + result[0]['titleLink'] + '\n'
             counter = 0
-            print(mes)
+            # print(mes)
             break
             # return result, mes
         except:
