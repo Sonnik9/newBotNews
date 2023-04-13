@@ -1,16 +1,14 @@
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 import telebot
-from telebot import types
+# from telebot import types
 import time
 import datetime 
 import re
 import random
+from fake_useragent import UserAgent
+ua = UserAgent()
 
-HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-}
 
 time_bank = []
 timeSetBank = set()
@@ -28,20 +26,76 @@ chat_id = '-1001579866760'
 # python teos_news.py
 session = HTMLSession()
 
-def newsCapturer(): 
+bot = telebot.TeleBot(API_KEY)
+@bot.message_handler(commands=['start']) 
+
+def start(message):
+    global result
+    global mes 
+    global flag
+    print('hello')
+
+    while(True):
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            # 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+            'user-agent': ua.random
+        }  
+        # print(headers)       
+        time.sleep(2)
+        newsCapturer(headers)    
+        try:        
+           print(str('test' + result[0]['header'] + 'hhbhbhbh'))
+        except:
+           print('empty result')
+           newsCapturer(headers)
+        print(flag)
+        print('first away')              
+        if flag == True:           
+            try:
+                # bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
+                bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
+                flag = False               
+                # await bot.send_message(id_channel, f"{hbold(name.result[0]['header'])}\n\n{name.mes}\n\n")
+                print('success')                
+            except:
+                print('connection error')
+                time.sleep(10)
+                try:
+                #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
+                   bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
+                   flag = False
+                   print('success2')
+                except:
+                    print('sec connection error') 
+                    time.sleep(20)  
+                    try:
+                #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
+                        bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
+                        flag = False
+                        print('success3')
+                    except:
+                        print('third connection error')                  
+            
+        # print('away')        
+        time.sleep(random.randrange(119,141))
+        # newsCapturer()
+
+def newsCapturer(headers): 
         global flag
         global middleNight           
         try:
-            r = session.get('https://www.pravda.com.ua/rus/news/', headers=HEADERS)
+            r = session.get('https://www.pravda.com.ua/rus/news/', headers=headers)
             soup = BeautifulSoup(r.text, 'lxml')
             timeBlock = soup.find('div', class_='article_time')
             aBlock = soup.find('div', class_='article_content').find('a').get('href')
+            realTime = timeBlock.get_text().strip().split(':')[0]
             try:         
                 match = re.search(r'https://', aBlock)
                 a_new_link = match.string       
             except: 
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
-            print(timeBlock.get_text().strip().split(':')[0])
+            print(realTime)
             print(datetime.datetime.now().strftime("%H"))
             # if datetime.datetime.now().strftime("%H") == "21":
             #     print(len(timeSetBank))
@@ -51,15 +105,15 @@ def newsCapturer():
             #     timeSize.clear()
             #     middleNight = 0
 
-            if timeBlock.get_text().strip().split(':')[0] == "23":
+            if realTime == "23":
                 print('true time')
                 print(len(timeSetBank))
                 middleNight = 1 
                 # print(timeSetBank)       
-            if timeBlock.get_text().strip().split(':')[0] == "00" and middleNight == 1:                                
+            if realTime == "00" and middleNight == 1:                                
                 timeSetBank.clear()
                 timeSize.clear()
-                print(f"{datetime.datetime.now().strftime('%H:%M')}__len timesetBank: {len(timeSetBank)}")
+                print(f"{realTime}__len timesetBank: {len(timeSetBank)}")
                 middleNight = 0                           
             
             if len(timeSize) != 0:                
@@ -68,24 +122,24 @@ def newsCapturer():
                 if timeSize[-1] - timeSize[-2] != 0:
                     flag = True
                     print('goal')
-                    hrefsControler(a_new_link)
+                    hrefsControler(a_new_link, headers)
                 else:
                     print('retry')
                     time.sleep(random.randrange(119,141))
-                    newsCapturer()                     
+                    newsCapturer(headers)                     
             else:
                 flag = True 
                 print('first commit')           
                 timeSetBank.add(timeBlock.get_text())
                 timeSize.append(len(timeSetBank))                
-                hrefsControler(a_new_link)
+                hrefsControler(a_new_link, headers)
                     
         except:
             print('somth bad')
             time.sleep(random.randrange(58,69))
-            newsCapturer() 
+            newsCapturer(headers) 
    
-def hrefsControler(a_new_link):   
+def hrefsControler(a_new_link, headers):   
     pravdaComUa = ''
     ePravdaComUa = ''
     integrationComUa = ''
@@ -120,21 +174,21 @@ def hrefsControler(a_new_link):
             
     if pravdaComUa != '':
         print('pravda')
-        pravdaCom(a_new_link)   
+        pravdaCom(a_new_link, headers)   
         
     elif ePravdaComUa != '':
         print('ePravda')
-        ePravdaCom(a_new_link)
+        ePravdaCom(a_new_link, headers)
     elif integrationComUa != '':
         print('integration')
-        integrationCom(a_new_link)
+        integrationCom(a_new_link, headers)
     elif lifePravdaComUa != '':
         print('lifePravda')
-        lifePravdaCom(a_new_link)
+        lifePravdaCom(a_new_link, headers)
     else:
         print('something else')
 
-def pravdaCom(a_new_link):
+def pravdaCom(a_new_link, headers):
     global result
     global mes
     result = []
@@ -142,9 +196,11 @@ def pravdaCom(a_new_link):
     counter = 0
     while(True): 
         try:  
-            r = session.get(f'{a_new_link}', headers=HEADERS)
+            r = session.get(f'{a_new_link}', headers=headers)
+            print(r.status_code)
             # r = session.get(f'https://www.pravda.com.ua/rus/news/2022/12/30/7383053/', headers=HEADERS)    
             soup = BeautifulSoup(r.text, 'lxml')
+            # print(r.text)
             dataInfo =''
             text = ''    
             try:
@@ -186,6 +242,7 @@ def pravdaCom(a_new_link):
             })    
             mes = result[0]['dataInfo'] + '\n' + result[0]['img'] + '\n' + result[0]['text'] + '\n' + result[0]['titleLink'] + '\n'
             counter = 0
+            print(mes)
             break
             # return result, mes
         except:
@@ -198,7 +255,7 @@ def pravdaCom(a_new_link):
             time.sleep(random.randrange(2, 8))
             continue
         
-def ePravdaCom(a_new_link):
+def ePravdaCom(a_new_link, headers):
     global result
     global mes
     result = []
@@ -206,7 +263,7 @@ def ePravdaCom(a_new_link):
     counter = 0
     while(True):
         try:    
-            r = session.get(f'{a_new_link}', headers=HEADERS)
+            r = session.get(f'{a_new_link}', headers=headers)
             # r = session.get(f'https://www.epravda.com.ua/rus/news/2023/01/3/695671/', headers=HEADERS)    
             soup = BeautifulSoup(r.text, 'lxml')
             dataInfo =''
@@ -261,7 +318,7 @@ def ePravdaCom(a_new_link):
             time.sleep(random.randrange(2, 8))
             continue
         
-def integrationCom(a_new_link):
+def integrationCom(a_new_link, headers):
     global result
     global mes    
     result = []
@@ -269,7 +326,7 @@ def integrationCom(a_new_link):
     counter = 0
     while(True): 
         try:   
-            r = session.get(f'{a_new_link}', headers=HEADERS)
+            r = session.get(f'{a_new_link}', headers=headers)
             # r = session.get(f'https://www.eurointegration.com.ua/rus/news/2023/01/3/7153513/', headers=HEADERS)    
             soup = BeautifulSoup(r.text, 'lxml')
             text = ''    
@@ -317,7 +374,7 @@ def integrationCom(a_new_link):
                 break
             time.sleep(random.randrange(2, 8))
             continue
-def lifePravdaCom(a_new_link):
+def lifePravdaCom(a_new_link, headers):
     global result
     global mes
     result = []
@@ -325,7 +382,7 @@ def lifePravdaCom(a_new_link):
     counter = 0
     while(True):  
         try:  
-            r = session.get(f'{a_new_link}', headers=HEADERS)
+            r = session.get(f'{a_new_link}', headers=headers)
             # r = session.get(f'https://life.pravda.com.ua/society/2023/01/3/252136/', headers=HEADERS)    
             soup = BeautifulSoup(r.text, 'lxml')
             dataInfo =''
@@ -380,54 +437,8 @@ def lifePravdaCom(a_new_link):
             time.sleep(random.randrange(2, 8))
             continue
 
-bot = telebot.TeleBot(API_KEY)
-@bot.message_handler(commands=['start']) 
 
-def start(message):
-    global result
-    global mes 
-    global flag      
-    while(True):   
-        time.sleep(2)
-        try:        
-           print(str('test' + result[0]['header'] + 'hhbhbhbh'))
-        except:
-           print('empty result')
-           newsCapturer()
-        print(flag)
-        print('first away')              
-        if flag == True:           
-            try:
-                # bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
-                bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
-                flag = False               
-                # await bot.send_message(id_channel, f"{hbold(name.result[0]['header'])}\n\n{name.mes}\n\n")
-                print('success')                
-            except:
-                print('connection error')
-                time.sleep(10)
-                try:
-                #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
-                   bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
-                   flag = False
-                   print('success2')
-                except:
-                    print('sec connection error') 
-                    time.sleep(20)  
-                    try:
-                #    bot.reply_to(message, f"*{(name.result[0]['header'])}*\n\n{name.mes}\n\n", parse_mode="Markdown")
-                        bot.send_message(chat_id, f"*{(result[0]['header'])}*\n\n{mes}\n\n", parse_mode="Markdown")
-                        flag = False
-                        print('success3')
-                    except:
-                        print('third connection error')                  
-            
-        print('away')        
-        time.sleep(random.randrange(119,141))
-        newsCapturer()
-
-def main(): 
-    newsCapturer()   
+def main():    
     bot.infinity_polling() 
         
 if __name__ == "__main__":
