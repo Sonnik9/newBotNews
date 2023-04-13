@@ -42,7 +42,7 @@ def start(message):
             'user-agent': ua.random
         }  
         # print(headers)     
-        newsCapturer(headers)  
+          
         time.sleep(2)  
         try:        
            print(str('test' + result[0]['header'] + 'hhbhbhbh'))
@@ -80,6 +80,7 @@ def start(message):
             
         # print('away')        
         time.sleep(random.randrange(119,141))
+        newsCapturer(headers)
         # newsCapturer()
 
 def newsCapturer(headers): 
@@ -97,7 +98,7 @@ def newsCapturer(headers):
             except: 
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
             print(realTime)
-            print(datetime.datetime.now().strftime("%H"))
+            # print(datetime.datetime.now().strftime("%H"))
             # if datetime.datetime.now().strftime("%H") == "21":
             #     print(len(timeSetBank))
             #     middleNight = 1          
@@ -439,7 +440,13 @@ def lifePravdaCom(a_new_link, headers):
             continue
 
 
-def main():    
+def main(): 
+    headers = {
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        # 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+        'user-agent': ua.random
+    }    
+    newsCapturer(headers) 
     bot.infinity_polling() 
         
 if __name__ == "__main__":
