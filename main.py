@@ -41,14 +41,15 @@ def start(message):
             # 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
             'user-agent': ua.random
         }  
-        # print(headers)       
-        time.sleep(2)
-        newsCapturer(headers)    
+        # print(headers)     
+        newsCapturer(headers)  
+        time.sleep(2)  
         try:        
            print(str('test' + result[0]['header'] + 'hhbhbhbh'))
         except:
            print('empty result')
            newsCapturer(headers)
+           time.sleep(2) 
         print(flag)
         print('first away')              
         if flag == True:           
