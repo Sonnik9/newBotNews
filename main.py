@@ -17,7 +17,8 @@ middleNight = 0
 flag = False
 mes = ''
 result = []
-API_KEY = '5826732776:AAHWGm-qmTINd9rTJ7CGtFbDLlRIZKSkKUU'
+# API_KEY = '5826732776:AAHWGm-qmTINd9rTJ7CGtFbDLlRIZKSkKUU'
+API_KEY = '6010432519:AAEgyTGCwCw-bZ8vWLnYmdLbcuLQ_ugfj2s'
 # sonnik
 # API_KEY = '5760534771:AAF82hGix86uOfv8sc0ag9HitREfLfoDCds'
 # teos
