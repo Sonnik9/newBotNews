@@ -56,11 +56,13 @@ class Controller:
         for _ in range(7):
             try:
                 r = requests.get(self.main_link, headers=self.random_headers)
+                print(r.status_code)
                 if r.status_code == 200:
                     return r
                 else:
                     time.sleep(3)
                     continue
+                
             except Exception as ex:
                 print(f"main__49___{ex}")
                 time.sleep(3)
