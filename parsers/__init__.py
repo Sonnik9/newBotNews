@@ -1,0 +1,1 @@
+from parsers import pravda_parser, e_pravda_parser, integrPravda_parser, lifePravda_parser
