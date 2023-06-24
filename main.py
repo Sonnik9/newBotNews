@@ -12,6 +12,7 @@ import random
 
 class Tg:
     def __init__(self, api_token) -> None:
+        # api_token = settings.API_TOKEN
         self.CHAT_ID = settings.CHAT_ID
         self.bot = telebot.TeleBot(api_token)
         self.control = Controller()
