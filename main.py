@@ -81,7 +81,7 @@ class Controller:
 
     def request(self):
         r = ''
-        for _ in range(7):
+        for _ in range(9):
             try:
                 headers=self.random_headers
                 curent_proxy = choice(self.proxy_list)
