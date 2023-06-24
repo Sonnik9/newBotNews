@@ -12,35 +12,60 @@ import random
 
 class Tg:
     def __init__(self, api_token) -> None:
-        # api_token = settings.API_TOKEN
         self.CHAT_ID = settings.CHAT_ID
         self.bot = telebot.TeleBot(api_token)
         self.control = Controller()
-        # self.c_cache = cleanup_cache.cleanup_cachee()
         atexit.register(cleanup_cache.cleanup_cachee)
 
     def start_command(self, message):
         self.bot.reply_to(message, "Hello! I'm News Bot!")
-        while True:
-            content_of_post = self.control.main_controller()
-            if content_of_post is not None:
-                header = f"*{content_of_post[1]}*\n\n"
-                body = content_of_post[0]
-                self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
-                try:
-                    cleanup_cache.cleanup_cachee()
-                except:
-                    pass
-            else:
-                time.sleep(random.randrange(120, 180))
-                continue
+        content_of_post = self.control.main_controller()
+        if content_of_post is not None:
+            header = f"*{content_of_post[1]}*\n\n"
+            body = content_of_post[0]
+            self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+            cleanup_cache.cleanup_cachee()
+            time.sleep(random.randrange(120, 180))
 
     def start_bot(self):
         @self.bot.message_handler(commands=['start'])
         def handle_start(message):
             self.start_command(message)
         
-        self.bot.polling()
+        self.bot.infinity_polling()
+    # def __init__(self, api_token) -> None:
+    #     # api_token = settings.API_TOKEN
+    #     self.CHAT_ID = settings.CHAT_ID
+    #     self.bot = telebot.TeleBot(api_token)
+    #     self.control = Controller()
+    #     # self.c_cache = cleanup_cache.cleanup_cachee()
+    #     atexit.register(cleanup_cache.cleanup_cachee)
+
+    # def start_command(self, message):
+    #     self.bot.reply_to(message, "Hello! I'm News Bot!")
+    #     while True:
+    #         print('one')
+    #         content_of_post = self.control.main_controller()
+    #         if content_of_post is not None:
+    #             header = f"*{content_of_post[1]}*\n\n"
+    #             body = content_of_post[0]
+    #             self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+    #             try:
+    #                 cleanup_cache.cleanup_cachee()
+    #             except:
+    #                 pass
+    #         else:
+    #             time.sleep(random.randrange(120, 180))
+    #             continue
+
+    # def start_bot(self):
+    #     @self.bot.message_handler(commands=['start'])
+    #     def handle_start(message):
+    #         self.start_command(message)
+        
+    #     self.bot.infinity_polling()
+
+
 
 class Controller:
     def __init__(self) -> None:
@@ -53,12 +78,15 @@ class Controller:
         self.main_link = 'https://www.pravda.com.ua/rus/news/'
 
     def request(self):
+        r = ''
         for _ in range(7):
             try:
-                r = requests.get(self.main_link, headers=self.random_headers)
+                headers=self.random_headers
+                print(type(headers))
+                r = requests.get(self.main_link, headers=headers)
                 print(r.status_code)
                 if r.status_code == 200:
-                    return r
+                    break                   
                 else:
                     time.sleep(3)
                     continue
@@ -67,6 +95,7 @@ class Controller:
                 print(f"main__49___{ex}")
                 time.sleep(3)
                 continue
+        return r
 
     def link_extracter(self, r):
         try:
