@@ -178,6 +178,7 @@ class Controller:
         r = self.request()
         result = None
         a_new_link, realTimeFull = self.link_extracter(r)
+        new_news_checker = False
         if a_new_link != None and realTimeFull != None:
             new_news_checker = self.time_manager(realTimeFull)
         if new_news_checker == True:
