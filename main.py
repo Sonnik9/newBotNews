@@ -121,7 +121,7 @@ class Controller:
                 a_new_link = match.string
             except:
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
-            # print(a_new_link)
+            print(a_new_link)
         except Exception as ex:
             print(f'main_74__{ex}')
             return None, None
