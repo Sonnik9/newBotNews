@@ -1,1 +1,1 @@
-from utils import random_headers, cleanup_cache
+from utils import random_headers, random_proxy, cleanup_cache

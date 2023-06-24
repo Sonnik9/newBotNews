@@ -1,5 +1,5 @@
 # # python main2.py
-from utils import random_headers, cleanup_cache
+from utils import random_headers, random_proxy, cleanup_cache
 from parsers import pravda_parser, e_pravda_parser, integrPravda_parser, lifePravda_parser
 from settings import settings
 import telebot
@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 import atexit
 import time
 import re
-import random
+import random 
+from random import choice 
 
 class Tg:
     def __init__(self, api_token) -> None:
@@ -75,6 +76,7 @@ class Controller:
         self.middleNight = False
         self.new_news_checker = False
         self.random_headers = random_headers.ffakeHeaders.randomH()
+        self.proxy_list = random_proxy.proxy_reader()
         self.main_link = 'https://www.pravda.com.ua/rus/news/'
 
     def request(self):
@@ -82,8 +84,13 @@ class Controller:
         for _ in range(7):
             try:
                 headers=self.random_headers
-                print(type(headers))
-                r = requests.get(self.main_link, headers=headers)
+                curent_proxy = choice(self.proxy_list)
+                proxy_item = {       
+                    "https": f"http://{curent_proxy}"          
+                }
+                # print(type(headers))
+                # print(curent_proxy)
+                r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
                 print(r.status_code)
                 if r.status_code == 200:
                     break                   
@@ -212,7 +219,7 @@ class Controller:
         new_news_checker = False
         if a_new_link != None and realTimeFull != None:
             new_news_checker = self.time_manager(realTimeFull)
-        if new_news_checker == True:
+        if new_news_checker:
             result = self.link_manager(a_new_link)
 
         return result
