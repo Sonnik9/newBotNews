@@ -43,8 +43,8 @@ class Tg:
                     cleanup_cache.cleanup_cachee()
                 except:
                     pass
-            else:
-                time.sleep(random.randrange(120, 180))
+            # else:
+            #     time.sleep(random.randrange(120, 180))
             schedule.every(121).seconds.do(job) 
             while True:
                 schedule.run_pending()
