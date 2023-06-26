@@ -32,7 +32,13 @@ class Tg:
             if content_of_post is not None:
                 header = f"*{content_of_post[1]}*\n\n"
                 body = content_of_post[0]
-                self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+                for _ in range(21):
+                    try:
+                        self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+                        break 
+                    except:
+                        time.sleep(5)
+                        continue
                 try:
                     cleanup_cache.cleanup_cachee()
                 except:
@@ -40,16 +46,16 @@ class Tg:
             else:
                 time.sleep(random.randrange(120, 180))
 
-        if self.first_time == False:
-            # time.sleep(3)
+        if self.first_time:
+            schedule.every(121).seconds.do(job) 
+            while True:
+                schedule.run_pending()
+                time.sleep(1)
+        else:
+            self.first_time = True
             job()
-            self.first_time = True 
 
-        schedule.every(121).seconds.do(job)
 
-        while True:
-            schedule.run_pending()
-            time.sleep(10)
 
     def start_bot(self):
         @self.bot.message_handler(commands=['start'])
