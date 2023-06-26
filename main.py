@@ -79,10 +79,11 @@ class Controller:
                 proxy_item = {       
                     "https": f"http://{curent_proxy}"          
                 }
-                print(headers)
-                print(proxy_item)
-                r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
-                print(r.status_code)
+                # print(headers)
+                # print(proxy_item)
+                # r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
+                r = requests.get(self.main_link, headers=headers)
+                # print(r.status_code)
                 if r.status_code == 200:
                     break                   
                 else:
@@ -100,7 +101,7 @@ class Controller:
         try:
             # soup = BeautifulSoup(r.text, 'lxml')
             soup = BeautifulSoup(r.text, 'html.parser')
-            print(r.text)
+            # print(r.text)
             try:
                 aBlock = soup.find('div', class_='article_content').find('a').get('href')
             except:
@@ -115,7 +116,7 @@ class Controller:
                 a_new_link = match.string
             except:
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
-            print(a_new_link)
+            # print(a_new_link)
             print(realTimeFull)
         except Exception as ex:
             print(f'main_74__{ex}')
