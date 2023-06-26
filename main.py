@@ -22,7 +22,7 @@ class Tg:
         self.control = Controller()
         # self.c_cache = cleanup_cache.cleanup_cachee()
         atexit.register(cleanup_cache.cleanup_cachee) 
-        
+
     def job(self):
         print('hello job')
         content_of_post = self.control.main_controller()
@@ -31,9 +31,11 @@ class Tg:
             body = content_of_post[0]
             for _ in range(21):
                 try:
+                    print(header)
                     self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
                     break 
                 except:
+                    print('api problem')
                     time.sleep(5)
                     continue
             try:
@@ -161,6 +163,7 @@ class Controller:
         return False
 
     def link_manager(self, a_new_link):
+        print('link_manager')
         result = None
         pravdaComUa = ''
         ePravdaComUa = ''
@@ -191,20 +194,20 @@ class Controller:
             lifePravdaComUa = ''
 
         if pravdaComUa:
-            # print('pravda')
+            print('pravda')
             result = pravda_parser.pravdaCom(a_new_link, self.random_headers)
         elif ePravdaComUa:
-            # print('ePravda')
+            print('ePravda')
             result = e_pravda_parser.ePravdaCom(a_new_link, self.random_headers)
         elif integrationComUa:
-            # print('integration')
+            print('integration')
             result = integrPravda_parser.integrationCom(a_new_link, self.random_headers)
         elif lifePravdaComUa:
-            # print('lifePravda')
+            print('lifePravda')
             result = lifePravda_parser.lifePravdaCom(a_new_link, self.random_headers)
         else:
-            pass
-            # print('something else')
+            # pass
+            print('something else')
 
         return result
 
