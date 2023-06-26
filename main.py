@@ -25,7 +25,7 @@ class Tg:
    
     def start_command(self, message):
         self.bot.reply_to(message, "Hello! I'm News Bot!") 
-         
+
         def job():
             print('hello job')
             content_of_post = self.control.main_controller()
@@ -98,7 +98,9 @@ class Controller:
 
     def link_extracter(self, r):
         try:
-            soup = BeautifulSoup(r.text, 'lxml')
+            # soup = BeautifulSoup(r.text, 'lxml')
+            soup = BeautifulSoup(r.text, 'html.parser')
+            print(r.text)
             try:
                 aBlock = soup.find('div', class_='article_content').find('a').get('href')
             except:
