@@ -16,51 +16,39 @@ class Tg:
 
     def __init__(self, api_token) -> None:
         # api_token = settings.API_TOKEN
-        self.first_time = False
+        # self.first_time = False
         self.CHAT_ID = settings.CHAT_ID
         self.bot = telebot.TeleBot(api_token)
         self.control = Controller()
         # self.c_cache = cleanup_cache.cleanup_cachee()
-        atexit.register(cleanup_cache.cleanup_cachee)
-   
+        atexit.register(cleanup_cache.cleanup_cachee) 
+        
+    def job(self):
+        print('hello job')
+        content_of_post = self.control.main_controller()
+        if content_of_post is not None:
+            header = f"*{content_of_post[1]}*\n\n"
+            body = content_of_post[0]
+            for _ in range(21):
+                try:
+                    self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+                    break 
+                except:
+                    time.sleep(5)
+                    continue
+            try:
+                cleanup_cache.cleanup_cachee()
+            except:
+                pass
+
     def start_command(self, message):
         self.bot.reply_to(message, "Hello! I'm News Bot!") 
+        self.job()
 
-        def job():
-            print('hello job')
-            content_of_post = self.control.main_controller()
-            if content_of_post is not None:
-                header = f"*{content_of_post[1]}*\n\n"
-                body = content_of_post[0]
-                for _ in range(21):
-                    try:
-                        self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
-                        break 
-                    except:
-                        time.sleep(5)
-                        continue
-                try:
-                    cleanup_cache.cleanup_cachee()
-                except:
-                    pass
-            # else:
-            #     time.sleep(random.randrange(120, 180))
-        schedule.every(121).seconds.do(job) 
+        schedule.every(120).seconds.do(self.job) 
         while True:
             schedule.run_pending()
-            time.sleep(1)
-        # job()
-
-        # if self.first_time:
-        #     schedule.every(121).seconds.do(job) 
-        #     while True:
-        #         schedule.run_pending()
-        #         time.sleep(1)
-        # else:
-        #     self.first_time = True
-        #     job()
-
-
+            time.sleep(5)
 
     def start_bot(self):
         @self.bot.message_handler(commands=['start'])
