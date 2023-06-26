@@ -652,3 +652,47 @@
 #     main()
 
 
+        
+        # self.bot.reply_to(message, "Hello! I'm News Bot!")
+        # while(True):
+        #     print('one')            
+        #     # if self.first_time == False:
+        #     #    time.sleep(3)
+        #     #    self.first_time = True 
+        #     #    continue
+        #     content_of_post = self.control.main_controller()
+        #     time.sleep(5)
+        #     if content_of_post is not None:
+        #         header = f"*{content_of_post[1]}*\n\n"
+        #         body = content_of_post[0]
+        #         self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+        #         try:
+        #             cleanup_cache.cleanup_cachee()
+        #         except:
+        #             pass
+        #     else:
+        #         time.sleep(random.randrange(120, 180))
+        #         continue
+
+    # def __init__(self, api_token) -> None:
+    #     self.CHAT_ID = settings.CHAT_ID
+    #     self.bot = telebot.TeleBot(api_token)
+    #     self.control = Controller()
+    #     atexit.register(cleanup_cache.cleanup_cachee)
+
+    # def start_command(self, message):
+    #     self.bot.reply_to(message, "Hello! I'm News Bot!")
+    #     content_of_post = self.control.main_controller()
+    #     if content_of_post is not None:
+    #         header = f"*{content_of_post[1]}*\n\n"
+    #         body = content_of_post[0]
+    #         self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+    #         cleanup_cache.cleanup_cachee()
+    #         time.sleep(random.randrange(120, 180))
+
+    # def start_bot(self):
+    #     @self.bot.message_handler(commands=['start'])
+    #     def handle_start(message):
+    #         self.start_command(message)
+        
+    #     self.bot.infinity_polling()

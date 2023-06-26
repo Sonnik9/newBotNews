@@ -5,6 +5,7 @@ from settings import settings
 import telebot
 import requests
 from bs4 import BeautifulSoup
+import schedule
 import atexit
 import time
 import re
@@ -12,61 +13,51 @@ import random
 from random import choice 
 
 class Tg:
+
     def __init__(self, api_token) -> None:
+        # api_token = settings.API_TOKEN
+        self.first_time = False
         self.CHAT_ID = settings.CHAT_ID
         self.bot = telebot.TeleBot(api_token)
         self.control = Controller()
+        # self.c_cache = cleanup_cache.cleanup_cachee()
         atexit.register(cleanup_cache.cleanup_cachee)
-
+   
     def start_command(self, message):
-        self.bot.reply_to(message, "Hello! I'm News Bot!")
-        content_of_post = self.control.main_controller()
-        if content_of_post is not None:
-            header = f"*{content_of_post[1]}*\n\n"
-            body = content_of_post[0]
-            self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
-            cleanup_cache.cleanup_cachee()
-            time.sleep(random.randrange(120, 180))
+        self.bot.reply_to(message, "Hello! I'm News Bot!") 
+         
+        def job():
+            print('hello job')
+            content_of_post = self.control.main_controller()
+            if content_of_post is not None:
+                header = f"*{content_of_post[1]}*\n\n"
+                body = content_of_post[0]
+                self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
+                try:
+                    cleanup_cache.cleanup_cachee()
+                except:
+                    pass
+            else:
+                time.sleep(random.randrange(120, 180))
+
+        if self.first_time == False:
+            # time.sleep(3)
+            job()
+            self.first_time = True 
+
+        schedule.every(121).seconds.do(job)
+
+        while True:
+            schedule.run_pending()
+            time.sleep(10)
 
     def start_bot(self):
         @self.bot.message_handler(commands=['start'])
         def handle_start(message):
+            # print('start comand')
             self.start_command(message)
         
         self.bot.infinity_polling()
-    # def __init__(self, api_token) -> None:
-    #     # api_token = settings.API_TOKEN
-    #     self.CHAT_ID = settings.CHAT_ID
-    #     self.bot = telebot.TeleBot(api_token)
-    #     self.control = Controller()
-    #     # self.c_cache = cleanup_cache.cleanup_cachee()
-    #     atexit.register(cleanup_cache.cleanup_cachee)
-
-    # def start_command(self, message):
-    #     self.bot.reply_to(message, "Hello! I'm News Bot!")
-    #     while True:
-    #         print('one')
-    #         content_of_post = self.control.main_controller()
-    #         if content_of_post is not None:
-    #             header = f"*{content_of_post[1]}*\n\n"
-    #             body = content_of_post[0]
-    #             self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
-    #             try:
-    #                 cleanup_cache.cleanup_cachee()
-    #             except:
-    #                 pass
-    #         else:
-    #             time.sleep(random.randrange(120, 180))
-    #             continue
-
-    # def start_bot(self):
-    #     @self.bot.message_handler(commands=['start'])
-    #     def handle_start(message):
-    #         self.start_command(message)
-        
-    #     self.bot.infinity_polling()
-
-
 
 class Controller:
     def __init__(self) -> None:
@@ -88,8 +79,8 @@ class Controller:
                 proxy_item = {       
                     "https": f"http://{curent_proxy}"          
                 }
-                # print(type(headers))
-                # print(curent_proxy)
+                print(headers)
+                print(proxy_item)
                 r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
                 print(r.status_code)
                 if r.status_code == 200:
@@ -97,6 +88,7 @@ class Controller:
                 else:
                     time.sleep(3)
                     continue
+                # break
                 
             except Exception as ex:
                 print(f"main__49___{ex}")
@@ -122,9 +114,11 @@ class Controller:
             except:
                 a_new_link = f"https://www.pravda.com.ua{aBlock}"
             print(a_new_link)
+            print(realTimeFull)
         except Exception as ex:
             print(f'main_74__{ex}')
             return None, None
+        
         if aBlock == '':
             return None, None
 
