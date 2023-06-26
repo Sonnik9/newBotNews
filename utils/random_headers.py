@@ -26,7 +26,7 @@ class FakeHeaders:
             'Path': '/AdServer/SPug?partnerID=162179&gdpr=0&gdpr_consent=&us_privacy=',
             'Scheme': 'https',
             'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate, br',
+            # 'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
             # 'Cookie': 'KADUSERCOOKIE=E05A7041-80DD-4963-99F8-04A085B027F2; chkChromeAb67Sec=16; pi=162179:3; DPSync3=1688947200%3A241_235_201_245; SyncRTB3=1689033600%3A35%7C1688947200%3A56_251_220_161_13_7_46_54_21%7C1688860800%3A69',
             'Referer': 'https://ads.pubmatic.com/',
