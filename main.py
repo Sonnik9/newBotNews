@@ -45,15 +45,20 @@ class Tg:
                     pass
             else:
                 time.sleep(random.randrange(120, 180))
-
-        if self.first_time:
             schedule.every(121).seconds.do(job) 
             while True:
                 schedule.run_pending()
                 time.sleep(1)
-        else:
-            self.first_time = True
-            job()
+        job()
+
+        # if self.first_time:
+        #     schedule.every(121).seconds.do(job) 
+        #     while True:
+        #         schedule.run_pending()
+        #         time.sleep(1)
+        # else:
+        #     self.first_time = True
+        #     job()
 
 
 
