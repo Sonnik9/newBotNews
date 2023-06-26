@@ -29,14 +29,14 @@ class Tg:
         if content_of_post is not None:
             header = f"*{content_of_post[1]}*\n\n"
             body = content_of_post[0]
-            for _ in range(21):
+            for _ in range(9):
                 try:
                     print(header)
                     self.bot.send_message(chat_id=self.CHAT_ID, text=header + body, parse_mode="Markdown")
                     break 
                 except:
                     print('api problem')
-                    time.sleep(5)
+                    time.sleep(21)
                     continue
             try:
                 cleanup_cache.cleanup_cachee()
@@ -47,7 +47,7 @@ class Tg:
         self.bot.reply_to(message, "Hello! I'm News Bot!") 
         self.job()
 
-        schedule.every(120).seconds.do(self.job) 
+        schedule.every(151).seconds.do(self.job) 
         while True:
             schedule.run_pending()
             time.sleep(5)
@@ -82,8 +82,8 @@ class Controller:
                 }
                 # print(headers)
                 # print(proxy_item)
-                # r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
-                r = requests.get(self.main_link, headers=headers)
+                r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
+                # r = requests.get(self.main_link, headers=headers)
                 # print(r.status_code)
                 if r.status_code == 200:
                     break                   
@@ -163,7 +163,7 @@ class Controller:
         return False
 
     def link_manager(self, a_new_link):
-        print('link_manager')
+        # print('link_manager')
         result = None
         pravdaComUa = ''
         ePravdaComUa = ''
