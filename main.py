@@ -82,8 +82,8 @@ class Controller:
                 }
                 # print(headers)
                 # print(proxy_item)
-                r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
-                # r = requests.get(self.main_link, headers=headers)
+                # r = requests.get(self.main_link, headers=headers, proxies=proxy_item)
+                r = requests.get(self.main_link, headers=headers)
                 # print(r.status_code)
                 if r.status_code == 200:
                     break                   
